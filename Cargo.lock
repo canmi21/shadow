@@ -179,6 +179,7 @@ dependencies = [
  "iana-time-zone",
  "js-sys",
  "num-traits",
+ "serde",
  "wasm-bindgen",
  "windows-link 0.2.0",
 ]
@@ -1156,10 +1157,11 @@ dependencies = [
 
 [[package]]
 name = "shadow"
-version = "1.2.12"
+version = "1.2.13"
 dependencies = [
  "anynet",
  "axum",
+ "chrono",
  "dotenvy",
  "fancy-log",
  "lazy-motd",

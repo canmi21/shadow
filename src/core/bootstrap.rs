@@ -22,14 +22,25 @@ pub async fn start() {
         .and_then(|s| s.parse::<u16>().ok())
         .unwrap_or(23333);
 
+    // Check for the new environment variable. Default to `true` if not specified.
+    let detect_public_network = env::var("DETECT_PUBLIC_NETWORK")
+        .unwrap_or_else(|_| "true".to_string())
+        .to_lowercase()
+        != "false";
+
     let app = router::create_router();
     let addr = SocketAddr::from(([0, 0, 0, 0], port));
 
-    // Run the potentially blocking anynet! macro in a dedicated thread
-    // to avoid blocking the Tokio runtime.
+    // Run the potentially blocking anynet! macro in a dedicated thread.
     let port_clone = port;
     if let Err(e) = task::spawn_blocking(move || {
-        anynet!(port = port_clone, public = true);
+        if detect_public_network {
+            // This can be slow as it makes an external HTTP request.
+            anynet!(port = port_clone, public = true);
+        } else {
+            // This is faster as it only scans local interfaces.
+            anynet!(port = port_clone);
+        }
     })
     .await
     {
@@ -46,7 +57,6 @@ pub async fn start() {
         .await
         .unwrap();
 
-    // This log is now safe because it runs after the server has fully shut down.
     log(LogLevel::Info, "Server has been shut down gracefully.");
 }
 

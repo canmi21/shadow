@@ -2,6 +2,7 @@
 
 pub mod common;
 pub mod core;
+pub mod modules;
 
 #[tokio::main]
 async fn main() {
