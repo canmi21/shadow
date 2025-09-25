@@ -2,6 +2,7 @@
 
 use crate::core::router;
 use crate::modules::configs::setup;
+use crate::modules::site::requirement;
 use anynet::anynet;
 use axum::serve;
 use dotenvy::dotenv;
@@ -24,6 +25,11 @@ pub async fn start() {
         .expect("Fatal: Failed to initialize database");
 
     print_motd();
+
+    // Ensure all default site configuration values exist.
+    requirement::ensure_defaults()
+        .await
+        .expect("Fatal: Failed to set site default values");
 
     let port = env::var("PORT")
         .ok()
