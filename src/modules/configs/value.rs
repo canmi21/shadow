@@ -59,16 +59,15 @@ pub async fn delete(key: &str) -> Result<(), ConfigError> {
         return Err(ConfigError::KeyNotFound(key.to_string()));
     }
 
-    let mut tx = get_pool().begin().await?;
-
+    // Step 1: Execute the DELETE statement directly on the pool.
+    // This is now allowed because it's not inside an explicit transaction.
     sqlx::query("DELETE FROM kv_store WHERE key = ?")
         .bind(key)
-        .execute(&mut *tx)
+        .execute(get_pool())
         .await?;
 
-    sqlx::query("VACUUM").execute(&mut *tx).await?;
-
-    tx.commit().await?;
+    // Step 2: After the delete is successful, execute VACUUM as a separate command.
+    sqlx::query("VACUUM").execute(get_pool()).await?;
 
     Ok(())
 }
