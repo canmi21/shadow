@@ -14,3 +14,6 @@ name = "shadow"
 path = "src/main.rs"
 
 [dependencies]
+dotenvy = "0.15"
+fancy-log = "0.1"
+lazy-motd = "1"
