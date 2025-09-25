@@ -17,9 +17,9 @@ fn main() {
     let cargo_version = get_command_output("cargo", &["--version"]);
     println!("cargo:rustc-env=CARGO_FULL_VERSION={}", cargo_version);
 
-    // Get build timestamp.
-    let build_timestamp = Utc::now().to_rfc3339();
-    println!("cargo:rustc-env=BUILD_TIMESTAMP={}", build_timestamp);
+    // Get build date in YYYY-MM-DD format.
+    let build_date = Utc::now().format("%Y-%m-%d").to_string();
+    println!("cargo:rustc-env=BUILD_DATE={}", build_date);
 
     // Rerun if git HEAD changes.
     println!("cargo:rerun-if-changed=.git/HEAD");
