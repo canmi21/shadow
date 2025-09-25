@@ -1,9 +1,9 @@
 /* src/main.rs */
 
-mod bootstrap;
-mod router;
+pub mod common;
+pub mod core;
 
 #[tokio::main]
 async fn main() {
-    bootstrap::start().await;
+    core::bootstrap::start().await;
 }
