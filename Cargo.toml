@@ -17,3 +17,8 @@ path = "src/main.rs"
 dotenvy = "0.15"
 fancy-log = "0.1"
 lazy-motd = "1"
+anynet = "1"
+axum = "0.8"
+tokio = { version = "1", features = ["full"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
