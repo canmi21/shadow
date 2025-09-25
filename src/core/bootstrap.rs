@@ -1,6 +1,7 @@
 /* src/core/bootstrap.rs */
 
 use crate::core::router;
+use crate::modules::configs::setup;
 use anynet::anynet;
 use axum::serve;
 use dotenvy::dotenv;
@@ -15,6 +16,13 @@ use tokio::task;
 pub async fn start() {
     dotenv().ok();
     setup_logging();
+
+    // Initialize the database before starting the server.
+    // The app should not start if the database fails to initialize.
+    setup::initialize_database()
+        .await
+        .expect("Fatal: Failed to initialize database");
+
     print_motd();
 
     let port = env::var("PORT")
