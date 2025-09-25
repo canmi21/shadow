@@ -23,6 +23,8 @@ tokio = { version = "1", features = ["full"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 chrono = { version = "0.4", features = ["serde"] }
+thiserror = "2"
+sqlx = { version = "0.8", features = ["sqlite", "runtime-tokio-rustls"] }
 
 [build-dependencies]
 chrono = { version = "0.4", features = ["serde"] }
