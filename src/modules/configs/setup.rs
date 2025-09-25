@@ -6,7 +6,7 @@ use std::{env, fs, path::Path};
 // Main initialization function to be called at startup.
 pub async fn initialize_database() -> Result<(), ConfigError> {
     let db_path_str =
-        env::var("SHADOW_DB_PATH").unwrap_or_else(|_| "/opt/shadow/config.sqlite".to_string());
+        env::var("DATABASE_PATH").unwrap_or_else(|_| "/opt/shadow/config.sqlite".to_string());
 
     let db_path = Path::new(&db_path_str);
 
