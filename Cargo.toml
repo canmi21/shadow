@@ -1,6 +1,6 @@
 [package]
 name = "shadow"
-version = "1.2.18"
+version = "1.2.19"
 edition = "2024"
 description = "Shadow – A quiet Rust backend, serving Sora’s world."
 license = "AGPL-3.0"
