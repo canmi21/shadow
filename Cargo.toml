@@ -1,0 +1,16 @@
+[package]
+name = "shadow"
+version = "1.2.8"
+edition = "2024"
+description = "Shadow – A quiet Rust backend, serving Sora’s world."
+license = "AGPL-3.0"
+repository = "https://github.com/canmi21/shadow"
+readme = "README.md"
+keywords = ["network", "server", "web", "shadow"]
+categories = ["network-programming", "web-programming", "development-tools"]
+
+[[bin]]
+name = "shadow"
+path = "src/main.rs"
+
+[dependencies]
