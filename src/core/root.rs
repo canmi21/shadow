@@ -34,11 +34,11 @@ pub async fn root_handler() -> impl IntoResponse {
             "commit": git_commit,
             "rust": rustc_version,
             "cargo": cargo_version,
-            "platform": {
-                "arch": arch,
-                "os": os,
-            },
             "timestamp": build_timestamp,
+        },
+        "runtime": {
+            "arch": arch,
+            "platform": os,
         },
         "timestamp": request_timestamp,
     }))
