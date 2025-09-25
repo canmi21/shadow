@@ -4,6 +4,7 @@ use std::env;
 
 mod common;
 mod core;
+mod middleware;
 mod modules;
 
 #[tokio::main]
