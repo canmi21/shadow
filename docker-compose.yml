@@ -1,0 +1,19 @@
+services:
+  shadow:
+    image: canmi/shadow:latest
+    container_name: shadow
+    networks:
+      - internal
+    env_file:
+      - ./.env
+    ports:
+      - "80:80/tcp"
+      - "443:443/tcp"
+      - "443:443/udp"
+    volumes:
+      - /opt/shadow:/root/shadow
+    restart: unless-stopped
+
+networks:
+  internal:
+    driver: bridge
