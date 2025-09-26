@@ -26,6 +26,7 @@ chrono = { version = "0.4", features = ["serde"] }
 thiserror = "2"
 sqlx = { version = "0.8", features = ["sqlite", "runtime-tokio-rustls"] }
 tower-http = { version = "0.6", features = ["cors"] }
+base64 = "0.22"
 
 [build-dependencies]
 chrono = { version = "0.4", features = ["serde"] }
