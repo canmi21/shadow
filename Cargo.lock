@@ -1633,10 +1633,11 @@ dependencies = [
 
 [[package]]
 name = "shadow"
-version = "1.2.23"
+version = "1.2.24"
 dependencies = [
  "anynet",
  "axum",
+ "base64 0.22.1",
  "chrono",
  "dotenvy",
  "fancy-log",
