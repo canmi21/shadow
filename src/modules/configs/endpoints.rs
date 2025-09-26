@@ -4,14 +4,11 @@ use crate::{
     common::response,
     modules::configs::{error::ConfigError, value},
 };
-use axum::{
-    body::Bytes,
-    extract::Path,
-    http::{StatusCode, header},
-    response::IntoResponse,
-};
+use axum::{body::Bytes, extract::Path, response::IntoResponse};
+use base64::Engine;
+use base64::engine::general_purpose::STANDARD as BASE64_STANDARD;
 use fancy_log::{LogLevel, log};
-use serde_json::json;
+use serde_json::{Value, json};
 
 // --- Handlers for /v1/config/* ---
 
@@ -20,26 +17,50 @@ fn path_to_key(path: String) -> String {
     path.trim_start_matches('/').replace('/', ".")
 }
 
-/// Handles GET requests to retrieve a value.
+/// Check if a string is safe for JSON "raw" mode
+fn is_json_safe(s: &str) -> bool {
+    !s.chars()
+        .any(|c| c.is_control() && c != '\n' && c != '\r' && c != '\t')
+}
+
+/// Handles GET requests to retrieve a value as JSON with type info.
 pub async fn get_handler(Path(key): Path<String>) -> Result<impl IntoResponse, ConfigError> {
     let key = path_to_key(key);
     let data = value::get(&key).await?;
-    let preview = String::from_utf8_lossy(&data);
-    let preview = if preview.len() <= 100 {
-        preview.into_owned()
-    } else {
-        format!("{}...", &preview[..100])
+
+    let (value, vtype) = match String::from_utf8(data.clone()) {
+        Ok(s) if is_json_safe(&s) => {
+            // try json first
+            if let Ok(json_val) = serde_json::from_str::<Value>(&s) {
+                (json_val, "json")
+            } else {
+                (json!(s), "string")
+            }
+        }
+        _ => (json!(BASE64_STANDARD.encode(&data)), "base64"),
+    };
+
+    let preview = {
+        let s = match &value {
+            Value::String(s) => s.clone(),
+            v => v.to_string(), // array/object/number/bool/null
+        };
+        if s.len() <= 100 {
+            s
+        } else {
+            format!("{}...", &s[..100])
+        }
     };
     log(
         LogLevel::Debug,
         &format!("✓ GET Value [{}]: {}", key, preview),
     );
-    // Return raw bytes, letting the client decide how to interpret it.
-    Ok((
-        StatusCode::OK,
-        [(header::CONTENT_TYPE, "application/octet-stream")],
-        data,
-    ))
+
+    Ok(response::success(json!({
+        "key": key,
+        "value": value,
+        "type": vtype,
+    })))
 }
 
 /// Handles POST requests to create a new key-value pair.
