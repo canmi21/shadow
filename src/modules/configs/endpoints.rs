@@ -10,6 +10,7 @@ use axum::{
     http::{StatusCode, header},
     response::IntoResponse,
 };
+use fancy_log::{LogLevel, log};
 use serde_json::json;
 
 // --- Handlers for /v1/config/* ---
@@ -23,6 +24,16 @@ fn path_to_key(path: String) -> String {
 pub async fn get_handler(Path(key): Path<String>) -> Result<impl IntoResponse, ConfigError> {
     let key = path_to_key(key);
     let data = value::get(&key).await?;
+    let preview = String::from_utf8_lossy(&data);
+    let preview = if preview.len() <= 100 {
+        preview.into_owned()
+    } else {
+        format!("{}...", &preview[..100])
+    };
+    log(
+        LogLevel::Debug,
+        &format!("✓ GET Value [{}]: {}", key, preview),
+    );
     // Return raw bytes, letting the client decide how to interpret it.
     Ok((
         StatusCode::OK,
