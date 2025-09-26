@@ -2,7 +2,7 @@
 
 use crate::modules::{
 	configs::{error::ConfigError, value},
-	site::{metadata, owner},
+	site::{inception, metadata, owner},
 };
 use fancy_log::{LogLevel, log};
 
@@ -22,6 +22,7 @@ pub async fn ensure_value_exists(key: &str, default_value: &[u8]) -> Result<(), 
 /// This is intended to be called once on server startup.
 pub async fn ensure_defaults() -> Result<(), ConfigError> {
 	metadata::initialize().await?;
+	inception::initialize().await?;
 	owner::initialize().await?;
 	Ok(())
 }
