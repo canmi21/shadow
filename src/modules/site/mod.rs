@@ -2,5 +2,6 @@
 
 pub mod inception;
 pub mod metadata;
+pub mod navigation;
 pub mod owner;
 pub mod requirement;
