@@ -2,7 +2,7 @@
 
 use crate::modules::{
 	configs::{error::ConfigError, value},
-	site::{inception, metadata, owner},
+	site::{inception, metadata, navigation, owner},
 };
 use fancy_log::{LogLevel, log};
 
@@ -24,5 +24,6 @@ pub async fn ensure_defaults() -> Result<(), ConfigError> {
 	metadata::initialize().await?;
 	inception::initialize().await?;
 	owner::initialize().await?;
+	navigation::initialize().await?;
 	Ok(())
 }
