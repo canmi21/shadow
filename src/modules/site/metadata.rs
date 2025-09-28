@@ -15,11 +15,18 @@ pub(super) async fn initialize() -> Result<(), ConfigError> {
 	let icp_json_value = json!([
 			{
 					"text": "沪ICP备2025141863号",
-					"url": "https://beian.miit.gov.cn/"
+					"url": "https://beian.miit.gov.cn/",
+					"visible": ["zh-CN"]
 			},
 			{
-					"text": "萌ICP备202421033号",
-					"url": "https://icp.gov.moe/"
+					"text": "沪公网安备31011702890896号",
+					"url": "https://beian.mps.gov.cn/#/query/webSearch?code=31011702890896",
+					"visible": ["zh-CN"]
+			},
+			{
+					"text": "萌ICP备20242133号",
+					"url": "https://icp.gov.moe/",
+					"visible": ["und", "en-US", "en-GB", "zh-HK", "es-ES", "fr-FR", "ja-JP" ]
 			}
 	])
 	.to_string();
