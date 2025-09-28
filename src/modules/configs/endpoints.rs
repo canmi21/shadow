@@ -45,21 +45,26 @@ pub async fn get_handler(Path(key): Path<String>) -> Result<impl IntoResponse, C
 			Value::String(s) => s.clone(),
 			v => v.to_string(), // array/object/number/bool/null
 		};
-		if s.len() <= 100 {
+		// Check the number of characters, not bytes.
+		if s.chars().count() <= 100 {
 			s
 		} else {
-			format!("{}...", &s[..100])
+			// Safely take the first 100 characters and append "...".
+			// This will not panic on multi-byte characters.
+			let truncated: String = s.chars().take(90).collect();
+			format!("{}...", truncated)
 		}
 	};
+
 	log(
 		LogLevel::Debug,
 		&format!("✓ GET Value [{}]: {}", key, preview),
 	);
 
 	Ok(response::success(json!({
-			"key": key,
-			"value": value,
-			"type": vtype,
+		"key": key,
+		"value": value,
+		"type": vtype,
 	})))
 }
 
