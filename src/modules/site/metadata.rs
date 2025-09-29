@@ -6,9 +6,10 @@ use serde_json::json;
 
 /// Ensures that default metadata values are present in the database.
 pub(super) async fn initialize() -> Result<(), ConfigError> {
-	ensure_value_exists("site.title", "貓窝".as_bytes()).await?;
-	ensure_value_exists("site.description", "致虚无，心を守。".as_bytes()).await?;
-	ensure_value_exists("site.navbar.title", "觉授の貓窝".as_bytes()).await?;
+	ensure_value_exists("site.title", "Lost in code".as_bytes()).await?;
+	ensure_value_exists("site.description", "致虚無，心を守。".as_bytes()).await?;
+	ensure_value_exists("site.navbar.title", "そらかなた".as_bytes()).await?;
+	ensure_value_exists("site.navbar.description", "致虚无，心を守。".as_bytes()).await?;
 	ensure_value_exists("site.domain", "canmi.net".as_bytes()).await?;
 
 	// Handle the JSON array for ICP records.
@@ -25,7 +26,7 @@ pub(super) async fn initialize() -> Result<(), ConfigError> {
 			},
 			{
 					"text": "萌ICP备20242133号",
-					"url": "https://icp.gov.moe/",
+					"url": "https://icp.gov.moe/?keyword=20251350",
 					"visible": ["und", "en-US", "en-GB", "zh-HK", "es-ES", "fr-FR", "ja-JP" ]
 			}
 	])
