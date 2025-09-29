@@ -1633,7 +1633,7 @@ dependencies = [
 
 [[package]]
 name = "shadow"
-version = "1.4.1"
+version = "1.4.2"
 dependencies = [
  "anynet",
  "axum",
